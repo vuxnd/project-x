@@ -221,7 +221,7 @@ Dev/asset-time only:
 ## 10. Project Identification
 
 - **Name:** Project-X — low-poly 3D FPS roguelite.
-- **Repository:** local only (not yet pushed).
+- **Repository:** https://github.com/vuxnd/project-x
 - **Owner:** vund.personal@gmail.com.
 - **Last updated:** 2026-08-12.
 
