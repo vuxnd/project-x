@@ -13,6 +13,7 @@ Living document. Update it in the same PR as any change that alters structure, d
 │   └── build-assets/
 │       ├── recipes/            # procedural mesh recipes, one per model (glob)
 │       ├── import/             # CC0 pack normalization configs
+│       ├── style.ts            # palette tokens, material factories, tri budgets
 │       └── build.ts            # recipes + imports → optimized GLBs
 └── src/
     ├── main.ts                 # composition root; the only file that knows all modules
@@ -151,7 +152,8 @@ export default defineWeapon({
 2. Procedural props/arena from `recipes/`.
 3. `npm run assets`: glTF-Transform prune/weld/quantize + meshopt → `public/assets/models/<id>.glb`.
 4. Runtime never fixes up assets; a load-time scale hack means the pipeline is broken.
-5. SFX = ZzFX param arrays in `audio/defs/` (authored at sfxr.me). Music = ZzFXM patterns.
+5. Visual consistency is enforced by `style.ts`: recipes take colors/materials/budgets only from its tokens, and `build.ts` fails on out-of-palette colors or blown tri budgets.
+6. SFX = ZzFX param arrays in `audio/defs/` (authored at sfxr.me). Music = ZzFXM patterns.
 
 ## 4. Data Stores
 
@@ -185,7 +187,7 @@ Dev/asset-time only:
 ## 7. Security Considerations
 
 - No auth, no PII, no network I/O; attack surface is the supply chain and the save file.
-- Runtime deps pinned (5 total: `three`, `three-mesh-bvh`, `postprocessing`, `zzfx`, `zzfxm`); lockfile committed; licenses MIT/Zlib only.
+- Runtime deps pinned (4 npm: `three`, `three-mesh-bvh`, `postprocessing`, `zzfx`); lockfile committed; licenses MIT/Zlib only. `zzfxm` is not published on npm: its MIT source (keithclark/ZzFXM) gets vendored at a pinned commit when the audio module lands, and still counts against the approved-dep list.
 - `SaveStore` treats `localStorage` as untrusted input: schema-validated on load, corrupt saves quarantined, never `eval`'d.
 - Asset licensing is a compliance concern: everything shipped must be CC0-verified (tracked in `tools/build-assets/import/`).
 
@@ -223,7 +225,7 @@ Dev/asset-time only:
 - **Name:** Project-X — low-poly 3D FPS roguelite.
 - **Repository:** https://github.com/vuxnd/project-x
 - **Owner:** vund.personal@gmail.com.
-- **Last updated:** 2026-08-12.
+- **Last updated:** 2026-08-13.
 
 ## 11. Glossary
 
