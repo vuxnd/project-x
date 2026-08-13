@@ -31,7 +31,7 @@ Adds one content def. One new file, zero shared files touched — that is the co
 
 4. **Write the file.** `export default define<Type>({ id: '<id>', ... })`. The file is auto-discovered via `import.meta.glob` — no registration anywhere.
 
-5. **Validate:** `npm run typecheck && npm run test`. If a dev server check is wanted, boot it — `Registry.validateAll()` names the failing file and field.
+5. **Validate:** `npm run typecheck && npm run lint && npm run test`. If a dev server check is wanted, boot it — `Registry.validateAll()` names the failing file and field.
 
 ## Per-type notes
 

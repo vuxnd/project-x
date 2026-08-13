@@ -14,14 +14,41 @@ export default tseslint.config(
     },
   },
   {
-    // Math.random is banned in game/ — gameplay must be reproducible from its seed (engine/Rng.ts).
+    // Nondeterminism is banned in game/ — runs must be reproducible from their seed (engine/Rng.ts).
     files: ['src/game/**/*.ts'],
     rules: {
-      'no-restricted-properties': ['error', {
-        object: 'Math',
-        property: 'random',
-        message: 'Use the seeded Rng service (engine/Rng.ts) instead of Math.random in game/.',
-      }],
+      'no-restricted-properties': ['error',
+        {
+          object: 'Math',
+          property: 'random',
+          message: 'Use the seeded Rng service (engine/Rng.ts) instead of Math.random in game/.',
+        },
+        {
+          object: 'Date',
+          property: 'now',
+          message: 'No wall-clock reads in game/ — runs must be reproducible from their seed.',
+        },
+        {
+          object: 'performance',
+          property: 'now',
+          message: 'No wall-clock reads in game/ — runs must be reproducible from their seed.',
+        },
+        {
+          object: 'crypto',
+          property: 'getRandomValues',
+          message: 'Use the seeded Rng service (engine/Rng.ts) instead of crypto randomness in game/.',
+        },
+      ],
+      'no-restricted-syntax': ['error',
+        {
+          selector: "NewExpression[callee.name='Date'][arguments.length=0]",
+          message: 'No wall-clock reads in game/ — runs must be reproducible from their seed.',
+        },
+        {
+          selector: "MemberExpression[object.type='MemberExpression'][object.property.name='Math'][property.name='random']",
+          message: 'Use the seeded Rng service (engine/Rng.ts) instead of Math.random in game/.',
+        },
+      ],
     },
   },
   {
@@ -38,11 +65,16 @@ export default tseslint.config(
       'boundaries/files': [
         { pattern: 'src/game/events.ts', category: 'game-shared' },
         { pattern: 'src/game/stats.ts', category: 'game-shared' },
+        // The engine surface game code may import (ARCHITECTURE.md §3.1): EngineContext types + Pool.
+        { pattern: 'src/engine/types.ts', category: 'engine-public' },
+        { pattern: 'src/engine/Pool.ts', category: 'engine-public' },
       ],
     },
     rules: {
       'boundaries/dependencies': ['error', {
         default: 'disallow',
+        // Unclassified local files must not become invisible import targets.
+        checkUnknownLocals: true,
         policies: [
           {
             // engine/ must not import game/
@@ -55,8 +87,7 @@ export default tseslint.config(
             allow: {
               to: [
                 { element: { type: 'game-module', captured: { module: '{{from.element.captured.module}}' } } },
-                { element: { type: 'engine' } },
-                { file: { categories: 'game-shared' } },
+                { file: { categories: ['engine-public', 'game-shared'] } },
               ],
             },
           },
@@ -64,15 +95,12 @@ export default tseslint.config(
             // vfx/, audio/, hud/ are listener-only: they may react, not reach into other modules
             from: { element: { type: 'listener' } },
             allow: {
-              to: [
-                { element: { type: 'engine' } },
-                { file: { categories: 'game-shared' } },
-              ],
+              to: { file: { categories: ['engine-public', 'game-shared'] } },
             },
           },
           {
             from: { file: { categories: 'game-shared' } },
-            allow: { to: { element: { type: 'engine' } } },
+            allow: { to: { file: { categories: 'engine-public' } } },
           },
         ],
       }],

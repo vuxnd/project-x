@@ -1,7 +1,8 @@
 import * as THREE from 'three'
 
 // Visual single source of truth. Recipes import colors, materials, and budgets
-// from here; build.ts rejects any mesh whose colors fall outside PALETTE.
+// from here; build.ts must reject any mesh whose colors fall outside PALETTE
+// (gate not wired yet — build.ts is a stub until the GLB pipeline lands).
 
 export const PALETTE = {
   // neutrals
@@ -36,6 +37,7 @@ export function assertPaletteColor(hex: number, context: string): void {
 }
 
 // The three sanctioned looks. Recipes never construct materials directly.
+// Cached instances are frozen and shared — clone() one for a one-off variant.
 const cache = new Map<string, THREE.MeshStandardMaterial>()
 
 function cached(key: string, make: () => THREE.MeshStandardMaterial): THREE.MeshStandardMaterial {
@@ -43,6 +45,9 @@ function cached(key: string, make: () => THREE.MeshStandardMaterial): THREE.Mesh
   if (!m) {
     m = make()
     m.name = key
+    Object.freeze(m.color)
+    Object.freeze(m.emissive)
+    Object.freeze(m)
     cache.set(key, m)
   }
   return m

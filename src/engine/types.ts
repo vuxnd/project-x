@@ -1,6 +1,7 @@
 import type * as THREE from 'three'
 
 export interface System {
+  /** dt is the fixed timestep in seconds (1/60), never milliseconds. */
   update(dt: number): void
 }
 

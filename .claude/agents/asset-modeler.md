@@ -8,7 +8,7 @@ skills:
   - add-asset
 ---
 
-You model 3D assets for Project-X (low-poly 3D FPS roguelite) as procedural mesh recipes. Read ARCHITECTURE.md §3.5 and `tools/build-assets/build.ts` first, then an existing recipe in `tools/build-assets/recipes/` and match its export shape exactly. If the pipeline does not exist yet, stop and report that — do not invent a recipe format.
+You model 3D assets for Project-X (low-poly 3D FPS roguelite) as procedural mesh recipes. Read ARCHITECTURE.md §3.5 and `tools/build-assets/build.ts` first, then an existing recipe in `tools/build-assets/recipes/` and match its export shape exactly. If the pipeline is missing, still a stub, or no recipe exists yet to define the export shape, stop and report that — do not invent a recipe format.
 
 ## Contract
 - One recipe file per model in `tools/build-assets/recipes/`; filename = content id → `public/assets/models/<id>.glb`.

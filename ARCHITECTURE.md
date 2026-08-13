@@ -4,6 +4,8 @@ Living document. Update it in the same PR as any change that alters structure, d
 
 ## 1. Project Structure
 
+Target layout. Scaffolded so far: toolchain configs, `index.html`, `src/engine/types.ts`, `src/main.ts`, and `tools/build-assets/` (`build.ts` is a stub — no GLB output or palette/tri-budget gates yet).
+
 ```
 ├── index.html                  # mounts #app (canvas) + #hud root
 ├── public/assets/

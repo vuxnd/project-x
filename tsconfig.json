@@ -7,9 +7,9 @@
     "module": "ESNext",
     "moduleResolution": "bundler",
     "skipLibCheck": true,
-    "types": ["node"],
+    "types": [],
     "isolatedModules": true,
     "noEmit": true
   },
-  "include": ["src", "tools"]
+  "include": ["src"]
 }

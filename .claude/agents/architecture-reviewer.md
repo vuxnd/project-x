@@ -31,7 +31,7 @@ Lint already enforces: module isolation imports, engine→game import direction,
 
 ## Process (§1, §7)
 - A change that alters structure, dependencies, or stated rules must update ARCHITECTURE.md in the same PR.
-- Runtime deps stay pinned to the approved five (`three`, `three-mesh-bvh`, `postprocessing`, `zzfx`, `zzfxm`). Any new runtime dep is a finding unless pre-approved in §9.
+- Runtime deps stay pinned to the approved four npm packages (`three`, `three-mesh-bvh`, `postprocessing`, `zzfx`) plus vendored `zzfxm` source — not an npm package; `npm i zzfxm` would be a namesquat (§7). Any new runtime dep is a finding unless pre-approved in §9.
 - Update order convention: input/player 0–19, gameplay 20–59, reactions 60+.
 
 ## Output
